@@ -1,3 +1,9 @@
+/**
+ * <h2>The Video Library Rentals System</h2>
+ * @author Dean Munywoki
+ * @version 1.0
+ */
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -11,10 +17,16 @@ import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.sql.*;
-public class Main extends Application {
 
+public class Genres extends Application{
+
+    /**
+     * <p>Declaring some global DB variables where
+     * conn is the Connection variable, url is the database link, user is the username
+     * and pass is the password.</p>
+     */
     Connection conn = null; //Connection variable
-    String url = "jdbc:mysql://localhost/Dean";  //Database link
+    String url = "jdbc:mysql://localhost/movierentals";  //Database link
     String user = "root";   //Username
     String pass = "";   //Password
 
@@ -24,26 +36,32 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException ce) {
             System.out.println("Error: unable to load driver class!");
             System.exit(1);
         }
         /**
-         * <p>Label for Name</P>
+         * <p>Label for Genres</P>
          */
-        Text label_1 = new Text("Name:");
+        Text label_1 = new Text("genres:");
+        /**
+         * <p>Label for Movie</P>
+         */
+        Text label_2 = new Text("movie_name:");
 
         /**
          * <p>Label for Registered</p>
          */
-        Text label_2 = new Text("Registered:");
+        Text label_3 = new Text("Registered:");
 
         /**
          * <p>Text Field for </p>
          */
         TextField textField1 = new TextField();
+        TextField textField2 = new TextField();
+        TextField textField3 = new TextField();
 
         /**
          * <p>Combo Box For Registered</p>
@@ -68,9 +86,11 @@ public class Main extends Application {
             public void handle(MouseEvent arg0) {
                 System.out.println("Data successfully entered into the database");  //Notification Message
                 try {
-                    String sql = "INSERT INTO genres"+"(genre,isactive) VALUES(?,?)";   //INSERT statement
+                    String sql = "INSERT INTO genres"+"(genre`id`,movie_name,genre,isactive) VALUES(?,?,?,?)";
                     final PreparedStatement stmt = conn.prepareStatement(sql);
                     stmt.setString(1,textField1.getText());
+                    stmt.setString(1,textField2.getText());
+                    stmt.setString(1,textField3.getText());
                     stmt.setInt(2,1);
                     stmt.executeUpdate();
                 } catch (SQLException se) {
